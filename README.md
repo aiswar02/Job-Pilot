@@ -21,6 +21,7 @@ JobPilot aims to simplify this process through a centralised dashboard.
 - Track application statuses
 - Manage interview and follow-up reminders
 - Dashboard with job-search statistics
+- Resume Analysis
 - Job Fit Checker to identify matched and missing skills
 
 ## Technology Stack
@@ -79,7 +80,7 @@ Currently under development.
 
 ## Future Enhancements
 
-- Resume analysis
+
 - Interview preparation
 - Advanced job-readiness analysis
 - Improved dashboard analytics
