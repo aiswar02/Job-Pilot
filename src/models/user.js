@@ -22,6 +22,12 @@ const userSchema = new mongoose.Schema(
             select: false
         },
 
+        refreshToken: {
+            type: String,
+            default: null,
+            select: false
+        },
+
         qualification: {
             type: String,
             trim: true
@@ -57,6 +63,19 @@ const userSchema = new mongoose.Schema(
             minimumSalary: {
                 type: Number,
                 min: 0
+            }
+        },
+
+        // RESUME FIELD (outside preferences)
+        resume: {
+            url: {
+                type: String,
+                default: ""
+            },
+
+            publicId: {
+                type: String,
+                default: ""
             }
         }
     },

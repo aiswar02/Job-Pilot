@@ -3,14 +3,14 @@ const router = express.Router();
 const {
     register,
     login,
-    getProfile,
+    refreshToken,
     logout
 } = require('../controllers/authController');
-const authMiddleware = require('../middleware/authMiddleware');
+
 
 router.post('/register',register);
 router.post('/login', login);
-router.get("/profile",authMiddleware, getProfile);
-router.post("/logout",authMiddleware, logout);
+router.post('/refresh-token', refreshToken);
+router.post("/logout", logout);
 
 module.exports = router;

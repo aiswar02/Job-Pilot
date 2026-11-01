@@ -1,16 +1,12 @@
 const express = require("express");
-const authRoutes = require("./routes/authRoutes");
-
 const app = express();
-
 app.use(express.json());
 
-app.get("/", (req, res) => {
-    res.status(200).json({
-        message: "Welcome to JobPilot API"
-    });
-});
+const authRoutes = require("./routes/authRoutes");
+const resumeRoutes = require("./routes/resumeRoutes");
+
 
 app.use("/api/auth", authRoutes);
+app.use("/api/resume", resumeRoutes);
 
 module.exports = app;
