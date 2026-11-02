@@ -66,7 +66,7 @@ const userSchema = new mongoose.Schema(
             }
         },
 
-        // RESUME FIELD (outside preferences)
+    
         resume: {
             url: {
                 type: String,
