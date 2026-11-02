@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Reminder | JobPilot</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<%- include("partials/sidebar") %>
+
+<div class="main-content">
+
+    <%- include("partials/navbar") %>
+
+    <h2>Add Reminder</h2>
+
+    <form id="reminderForm">
+
+        <label>Title</label>
+        <input type="text" id="title" required>
+
+        <label>Description</label>
+        <textarea id="description"></textarea>
+
+        <label>Reminder Type</label>
+        <select id="reminderType">
+            <option value="INTERVIEW">Interview</option>
+            <option value="FOLLOW_UP">Follow Up</option>
+            <option value="OTHER">Other</option>
+        </select>
+
+        <label>Due Date</label>
+        <input type="datetime-local" id="dueDate" required>
+
+        <label>Status</label>
+        <select id="status">
+            <option value="PENDING">Pending</option>
+            <option value="COMPLETED">Completed</option>
+            <option value="CANCELLED">Cancelled</option>
+        </select>
+
+        <button type="submit">Save Reminder</button>
+
+    </form>
+
+    <p id="message"></p>
+
+</div>
+
+<script src="/js/script.js"></script>
+</body>
+</html>

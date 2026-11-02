@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Application | JobPilot</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<%- include("partials/sidebar") %>
+
+<div class="main-content">
+
+    <%- include("partials/navbar") %>
+
+    <h2>Add Job Application</h2>
+
+    <form id="applicationForm">
+
+        <label>Company Name</label>
+        <input type="text" id="companyName" required>
+
+        <label>Job Title</label>
+        <input type="text" id="jobTitle" required>
+
+        <label>Location</label>
+        <input type="text" id="location">
+
+        <label>Job Type</label>
+        <select id="jobType">
+            <option value="FULL_TIME">Full Time</option>
+            <option value="PART_TIME">Part Time</option>
+            <option value="INTERNSHIP">Internship</option>
+        </select>
+
+        <label>Work Mode</label>
+        <select id="workMode">
+            <option value="ONSITE">Onsite</option>
+            <option value="HYBRID">Hybrid</option>
+            <option value="REMOTE">Remote</option>
+        </select>
+
+        <label>Salary</label>
+        <input type="number" id="salary">
+
+        <label>Source</label>
+        <input type="text" id="source" placeholder="LinkedIn, Indeed, etc.">
+
+        <label>Job URL</label>
+        <input type="url" id="jobUrl">
+
+        <label>Status</label>
+        <select id="status">
+            <option value="SAVED">Saved</option>
+            <option value="APPLIED">Applied</option>
+            <option value="ASSESSMENT">Assessment</option>
+            <option value="INTERVIEW">Interview</option>
+            <option value="OFFER">Offer</option>
+            <option value="REJECTED">Rejected</option>
+        </select>
+
+        <label>Applied Date</label>
+        <input type="date" id="appliedDate">
+
+        <label>Notes</label>
+        <textarea id="notes"></textarea>
+
+        <button type="submit">Save Application</button>
+
+    </form>
+
+    <p id="message"></p>
+
+</div>
+
+<script src="/js/script.js"></script>
+</body>
+</html>

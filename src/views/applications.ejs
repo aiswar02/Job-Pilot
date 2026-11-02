@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Applications | JobPilot</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<%- include("partials/sidebar") %>
+
+<div class="main-content">
+
+    <%- include("partials/navbar") %>
+
+    <h2>Job Applications</h2>
+
+    <a href="/applications/add">
+        <button>+ Add Application</button>
+    </a>
+
+    <input type="text" id="searchApplication"
+           placeholder="Search company or job title">
+
+    <table>
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Job Title</th>
+                <th>Status</th>
+                <th>Applied Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody id="applicationsTable"></tbody>
+    </table>
+
+</div>
+
+<script src="/js/script.js"></script>
+</body>
+</html>

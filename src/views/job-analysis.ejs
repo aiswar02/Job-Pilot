@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Analysis | JobPilot</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<%- include("partials/sidebar") %>
+
+<div class="main-content">
+
+    <%- include("partials/navbar") %>
+
+    <h2>Job Analysis</h2>
+
+    <p>Compare your skills with the job requirements.</p>
+
+    <form id="jobAnalysisForm">
+
+        <label>Job Description</label>
+
+        <textarea id="jobDescription"
+                  placeholder="Paste the job description here..."
+                  rows="8" required></textarea>
+
+        <button type="submit">Analyze Job</button>
+
+    </form>
+
+    <div class="card" id="analysisResult"></div>
+
+</div>
+
+<script src="/js/script.js"></script>
+</body>
+</html>

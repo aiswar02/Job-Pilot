@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reminders | JobPilot</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<%- include("partials/sidebar") %>
+
+<div class="main-content">
+
+    <%- include("partials/navbar") %>
+
+    <h2>Reminders</h2>
+
+    <a href="/reminders/add">
+        <button>+ Add Reminder</button>
+    </a>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody id="remindersTable"></tbody>
+
+    </table>
+
+</div>
+
+<script src="/js/script.js"></script>
+</body>
+</html>

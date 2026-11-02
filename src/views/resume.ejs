@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resume | JobPilot</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<%- include("partials/sidebar") %>
+
+<div class="main-content">
+
+    <%- include("partials/navbar") %>
+
+    <h2>My Resume</h2>
+
+    <div class="card">
+
+        <form id="resumeForm">
+
+            <label>Upload Resume (PDF only)</label>
+
+            <input type="file" id="resumeFile" accept=".pdf" required>
+
+            <button type="submit">Upload Resume</button>
+
+        </form>
+
+        <p id="message"></p>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Uploaded Resume</h3>
+
+        <div id="resumeDetails">
+            No resume uploaded.
+        </div>
+
+        <button id="deleteResume">Delete Resume</button>
+
+    </div>
+
+</div>
+
+<script src="/js/script.js"></script>
+</body>
+</html>

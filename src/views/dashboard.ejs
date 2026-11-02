@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | JobPilot</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<%- include("partials/sidebar") %>
+
+<div class="main-content">
+
+    <%- include("partials/navbar") %>
+
+    <h2>Dashboard</h2>
+    <p>Overview of your job application activities</p>
+
+    <div class="dashboard-cards">
+
+        <div class="card">
+            <h3>Total Applications</h3>
+            <h2 id="totalApplications">0</h2>
+        </div>
+
+        <div class="card">
+            <h3>Saved</h3>
+            <h2 id="saved">0</h2>
+        </div>
+
+        <div class="card">
+            <h3>Applied</h3>
+            <h2 id="applied">0</h2>
+        </div>
+
+        <div class="card">
+            <h3>Interviews</h3>
+            <h2 id="interviews">0</h2>
+        </div>
+
+        <div class="card">
+            <h3>Offers</h3>
+            <h2 id="offers">0</h2>
+        </div>
+
+        <div class="card">
+            <h3>Rejected</h3>
+            <h2 id="rejected">0</h2>
+        </div>
+
+    </div>
+
+    <div class="card">
+        <h3>Pending Reminders</h3>
+        <h2 id="pendingReminders">0</h2>
+    </div>
+
+</div>
+
+<script src="/js/script.js"></script>
+</body>
+</html>
