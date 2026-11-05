@@ -6,36 +6,47 @@ const getDashboard = async (req, res) => {
     try {
         const userId = req.userId;
 
-        const totalApplications = await JobApplication.countDocuments({ userId });
+        // Count only active applications
+        const totalApplications = await JobApplication.countDocuments({
+            userId,
+            isDeleted: false
+        });
 
         const saved = await JobApplication.countDocuments({
             userId,
-            status: "SAVED"
+            status: "SAVED",
+            isDeleted: false
         });
 
         const applied = await JobApplication.countDocuments({
             userId,
-            status: "APPLIED"
+            status: "APPLIED",
+            isDeleted: false
         });
 
         const interviews = await JobApplication.countDocuments({
             userId,
-            status: "INTERVIEW"
+            status: "INTERVIEW",
+            isDeleted: false
         });
 
         const offers = await JobApplication.countDocuments({
             userId,
-            status: "OFFER"
+            status: "OFFER",
+            isDeleted: false
         });
 
         const rejected = await JobApplication.countDocuments({
             userId,
-            status: "REJECTED"
+            status: "REJECTED",
+            isDeleted: false
         });
 
+        // Count only active pending reminders
         const pendingReminders = await Reminder.countDocuments({
             userId,
-            status: "PENDING"
+            status: "PENDING",
+            isDeleted: false
         });
 
         res.status(200).json({
@@ -59,4 +70,4 @@ const getDashboard = async (req, res) => {
     }
 };
 
-module.exports = { getDashboard };
+module.exports = { getDashboard }

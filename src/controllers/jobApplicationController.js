@@ -24,7 +24,8 @@ const createApplication = async (req, res) => {
 const getApplications = async (req, res) => {
     try {
         const applications = await JobApplication.find({
-            userId: req.userId
+            userId: req.userId,
+            isDeleted: { $ne: true }
         }).sort({ createdAt: -1 });
 
         res.json({
@@ -44,7 +45,8 @@ const getApplicationById = async (req, res) => {
     try {
         const application = await JobApplication.findOne({
             _id: req.params.id,
-            userId: req.userId
+            userId: req.userId,
+            isDeleted: { $ne: true }
         });
 
         if (!application) {
@@ -98,24 +100,36 @@ const updateApplication = async (req, res) => {
 // DELETE APPLICATION
 const deleteApplication = async (req, res) => {
     try {
-        const application = await JobApplication.findOneAndDelete({
-            _id: req.params.id,
-            userId: req.userId
-        });
+        const application = await JobApplication.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                userId: req.userId,
+                isDeleted: { $ne: true }
+            },
+            {
+                isDeleted: true,
+                deletedAt: new Date()
+            },
+            {
+                new: true
+            }
+        );
 
         if (!application) {
             return res.status(404).json({
+                success: false,
                 message: "Application not found"
             });
         }
 
-        res.json({
+        return res.status(200).json({
+            success: true,
             message: "Application deleted successfully"
         });
-
     } catch (error) {
-        res.status(400).json({
-            message: "Invalid application ID"
+        return res.status(500).json({
+            success: false,
+            message: error.message
         });
     }
 };

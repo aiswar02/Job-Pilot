@@ -40,7 +40,8 @@ const createReminder = async (req, res) => {
 const getReminders = async (req, res) => {
     try {
         const reminders = await Reminder.find({
-            userId: req.userId
+            userId: req.userId,
+            isDeleted: false
         }).sort({ dueDate: 1 });
 
         res.status(200).json({
@@ -62,8 +63,15 @@ const getReminderById = async (req, res) => {
     try {
         const reminder = await Reminder.findOne({
             _id: req.params.id,
-            userId: req.userId
-        });
+            userId: req.userId,
+            isDeleted: { $ne: true }
+        },
+        {
+            isDeleted: true,
+            deletedAt: new Date()
+        },
+        {new: true}
+    );
 
         if (!reminder) {
             return res.status(404).json({
@@ -72,7 +80,9 @@ const getReminderById = async (req, res) => {
             });
         }
 
-        res.status(200).json({ success: true, reminder });
+        return res.status(200).json({ success: true, 
+            message: "Reminder deleted successfully"
+         });
 
     } catch (error) {
         res.status(400).json({
@@ -88,10 +98,11 @@ const updateReminder = async (req, res) => {
         const reminder = await Reminder.findOneAndUpdate(
             {
                 _id: req.params.id,
-                userId: req.userId
+                userId: req.userId,
+                isDeleted: false
             },
             req.body,
-            {
+            {new: true,
                 returnDocument: "after",
                 runValidators: true
             }

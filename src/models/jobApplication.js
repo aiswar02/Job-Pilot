@@ -83,6 +83,14 @@ const jobApplicationSchema = new mongoose.Schema(
         notes: {
             type: String,
             default: ""
+        },
+        isDeleted: {
+            type: Boolean,
+            default: false
+        },
+        deletedAt: {
+            type: Date,
+            default: null
         }
     },
     {
