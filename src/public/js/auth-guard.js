@@ -1,39 +1,75 @@
-(function () {
+(async function () {
     const publicPages = ["/login", "/register"];
-
     const currentPage = window.location.pathname;
+
+    // Allow login and register pages
+    if (publicPages.includes(currentPage)) {
+        return;
+    }
 
     const accessToken = localStorage.getItem("accessToken");
 
-    // If user is not logged in
-    if (!accessToken && !publicPages.includes(currentPage)) {
+    // No token: redirect to login
+    if (!accessToken) {
+        localStorage.removeItem("refreshToken");
         window.location.replace("/login");
         return;
     }
 
-    // If user is already logged in, prevent login/register pages
-    if (accessToken && publicPages.includes(currentPage)) {
-        window.location.replace("/dashboard");
-        return;
+    // Verify token with backend
+    try {
+        const response = await fetch(
+            "https://job-pilot-1-czpi.onrender.com/api/profile",
+            {
+                method: "GET",
+                headers: {
+                    Authorization: Bearer `${accessToken}`
+                },
+                cache: "no-store"
+            }
+        );
+
+        if (!response.ok) {
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+
+            window.location.replace("/login");
+            return;
+        }
+
+    } catch (error) {
+        console.error("Authentication check failed:", error);
     }
 
-    // Prevent browser from restoring protected pages from history
-    window.addEventListener("pageshow", function (event) {
-        if (event.persisted) {
-            const token = localStorage.getItem("accessToken");
-
-            if (!token && !publicPages.includes(window.location.pathname)) {
-                window.location.replace("/login");
-            }
-        }
-    });
-
-    // Recheck authentication when browser Back/Forward is used
-    window.addEventListener("popstate", function () {
+    // Check authentication when returning through browser history
+    window.addEventListener("pageshow", async function () {
         const token = localStorage.getItem("accessToken");
 
-        if (!token && !publicPages.includes(window.location.pathname)) {
+        if (!token) {
             window.location.replace("/login");
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                "https://job-pilot-1-czpi.onrender.com/api/profile",
+                {
+                    headers: {
+                        Authorization: Bearer `${token}`
+                    },
+                    cache: "no-store"
+                }
+            );
+
+            if (!response.ok) {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+
+                window.location.replace("/login");
+            }
+
+        } catch (error) {
+            console.error("Authentication check failed:", error);
         }
     });
-})();
+})()
