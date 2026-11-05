@@ -3,33 +3,44 @@ const API_BASE_URL ="https://job-pilot-1-czpi.onrender.com/api";
 async function apiRequest(endpoint, method = "GET", data = null) {
     const accessToken = localStorage.getItem("accessToken");
 
-    const headers = {
-        "Authorization":`Bearer ${accessToken}`
-    };
+    const headers = {};
 
-    if (!(data instanceof FormData)) {
+    if (accessToken) {
+        headers["Authorization"] = `Bearer ${accessToken}`;
+    }
+
+    if (!(data instanceof FormData) && data !== null) {
         headers["Content-Type"] = "application/json";
     }
 
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-        method: method,
-        headers: headers,
-        body: data
-            ? data instanceof FormData
-                ? data
-                : JSON.stringify(data)
-            : null
-    });
+    try {
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+            method,
+            headers,
+            body: data
+                ? data instanceof FormData
+                    ? data
+                    : JSON.stringify(data)
+                : null
+        });
 
-    const result = await response.json();
+        const result = await response.json();
 
-    if (!response.ok) {
-        throw new Error(result.message || "API request failed");
+        if (!response.ok) {
+            throw new Error(result.message || "API request failed");
+        }
+
+        return result;
+
+    } catch (error) {
+        console.error("API Error:", error);
+        throw new Error(
+            error.message === "Failed to fetch"
+                ? "Cannot reach server. Please check your API URL or server connection."
+                : error.message
+        );
     }
-
-    return result;
 }
-
 
 // REGISTER
 
