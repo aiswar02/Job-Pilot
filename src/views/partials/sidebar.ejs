@@ -1,13 +1,42 @@
 <div class="sidebar">
     <h2 class="logo">Job<span>Pilot</span></h2>
 
-    <a href="/dashboard">🏠 Dashboard</a>
-    <a href="/applications">📋 Applications</a>
-    <a href="/reminders">🔔 Reminders</a>
-    <a href="/job-analysis">📊 Job Analysis</a>
-    <a href="/resume">📄 Resume</a>
-    <a href="/profile">👤 Profile</a>
-    <a href="/settings">⚙️ Settings</a>
+    <a href="/dashboard"
+       class="<%= typeof currentPage !== 'undefined' && currentPage === 'dashboard' ? 'active' : '' %>">
+        🏠 Dashboard
+    </a>
 
-    <a href="/login" class="logout">🚪 Logout</a>
+    <a href="/applications"
+       class="<%= typeof currentPage !== 'undefined' && currentPage === 'applications' ? 'active' : '' %>">
+        📋 Applications
+    </a>
+
+    <a href="/reminders"
+       class="<%= typeof currentPage !== 'undefined' && currentPage === 'reminders' ? 'active' : '' %>">
+        🔔 Reminders
+    </a>
+
+    <a href="/job-analysis"
+       class="<%= typeof currentPage !== 'undefined' && currentPage === 'job-analysis' ? 'active' : '' %>">
+        📊 Job Analysis
+    </a>
+
+    <a href="/resume"
+       class="<%= typeof currentPage !== 'undefined' && currentPage === 'resume' ? 'active' : '' %>">
+        📄 Resume
+    </a>
+
+    <a href="/profile"
+       class="<%= typeof currentPage !== 'undefined' && currentPage === 'profile' ? 'active' : '' %>">
+        👤 Profile
+    </a>
+
+    <a href="/settings"
+       class="<%= typeof currentPage !== 'undefined' && currentPage === 'settings' ? 'active' : '' %>">
+        ⚙️ Settings
+    </a>
+
+    <a href="/login" class="logout">
+        🚪 Logout
+    </a>
 </div>

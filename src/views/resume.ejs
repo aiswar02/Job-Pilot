@@ -8,44 +8,46 @@
 
 <body>
 
-<%- include("partials/sidebar") %>
+    <%- include("partials/sidebar") %>
 
-<div class="main-content">
+    <div class="main-content">
 
-    <%- include("partials/navbar") %>
+        <%- include("partials/navbar") %>
 
-    <h2>My Resume</h2>
+        <h2>My Resume</h2>
 
-    <div class="card">
+        <div class="card">
 
-        <form id="resumeForm">
+            <form id="resumeForm">
 
-            <label>Upload Resume (PDF only)</label>
+                <label>Upload Resume (PDF only)</label>
 
-            <input type="file" id="resumeFile" accept=".pdf" required>
+                <input
+                    type="file"
+                    id="resumeFile"
+                    accept=".pdf"
+                    required
+                >
 
-            <button type="submit">Upload Resume</button>
+                <button type="submit">Upload Resume</button>
 
-        </form>
+            </form>
 
-        <p id="message"></p>
+            <p id="message"></p>
 
-    </div>
-
-    <div class="card">
-
-        <h3>Uploaded Resume</h3>
-
-        <div id="resumeDetails">
-            No resume uploaded.
         </div>
 
-        <button id="deleteResume">Delete Resume</button>
+        <div class="card">
+
+            <div id="resumeDetails">
+                <p>Checking resume status...</p>
+            </div>
+
+        </div>
 
     </div>
 
-</div>
+    <script src="/js/script.js"></script>
 
-<script src="/js/script.js"></script>
 </body>
 </html>

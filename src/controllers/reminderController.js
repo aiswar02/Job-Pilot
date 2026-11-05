@@ -3,18 +3,34 @@ const Reminder = require("../models/reminder");
 // CREATE REMINDER
 const createReminder = async (req, res) => {
     try {
+        const { title, reminderType, dueDate, status, notes, applicationId } = req.body;
+
+        if (!title || !reminderType || !dueDate) {
+            return res.status(400).json({
+                success: false,
+                message: "Title, reminder type and due date are required"
+            });
+        }
+
         const reminder = await Reminder.create({
-            ...req.body,
-            userId: req.userId
+            userId: req.userId,
+            title,
+            reminderType,
+            dueDate,
+            status: status || "PENDING",
+            notes: notes || "",
+            applicationId: applicationId || null
         });
 
         res.status(201).json({
+            success: true,
             message: "Reminder created successfully",
             reminder
         });
 
     } catch (error) {
         res.status(400).json({
+            success: false,
             message: error.message
         });
     }
@@ -25,15 +41,17 @@ const getReminders = async (req, res) => {
     try {
         const reminders = await Reminder.find({
             userId: req.userId
-        }).sort({ reminderDate: 1 });
+        }).sort({ dueDate: 1 });
 
-        res.json({
+        res.status(200).json({
+            success: true,
             count: reminders.length,
             reminders
         });
 
     } catch (error) {
         res.status(500).json({
+            success: false,
             message: error.message
         });
     }
@@ -49,14 +67,16 @@ const getReminderById = async (req, res) => {
 
         if (!reminder) {
             return res.status(404).json({
+                success: false,
                 message: "Reminder not found"
             });
         }
 
-        res.json({ reminder });
+        res.status(200).json({ success: true, reminder });
 
     } catch (error) {
         res.status(400).json({
+            success: false,
             message: "Invalid reminder ID"
         });
     }
@@ -72,24 +92,27 @@ const updateReminder = async (req, res) => {
             },
             req.body,
             {
-               returnDocument: "after",
+                returnDocument: "after",
                 runValidators: true
             }
         );
 
         if (!reminder) {
             return res.status(404).json({
+                success: false,
                 message: "Reminder not found"
             });
         }
 
-        res.json({
+        res.status(200).json({
+            success: true,
             message: "Reminder updated successfully",
             reminder
         });
 
     } catch (error) {
         res.status(400).json({
+            success: false,
             message: error.message
         });
     }
@@ -105,16 +128,19 @@ const deleteReminder = async (req, res) => {
 
         if (!reminder) {
             return res.status(404).json({
+                success: false,
                 message: "Reminder not found"
             });
         }
 
-        res.json({
+        res.status(200).json({
+            success: true,
             message: "Reminder deleted successfully"
         });
 
     } catch (error) {
         res.status(400).json({
+            success: false,
             message: "Invalid reminder ID"
         });
     }
@@ -126,4 +152,4 @@ module.exports = {
     getReminderById,
     updateReminder,
     deleteReminder
-};
+}

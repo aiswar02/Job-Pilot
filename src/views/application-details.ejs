@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Application Details | JobPilot</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -14,16 +15,18 @@
 
     <%- include("partials/navbar") %>
 
-    <h2>Application Details</h2>
-
-    <div class="card" id="applicationDetails">
-        Loading application details...
+    <div class="topbar">
+        <h2>Application Details</h2>
+        <a href="/applications" class="btn">Back to Applications</a>
     </div>
 
-    <a href="/applications">Back to Applications</a>
+    <div class="content-card" id="applicationDetails">
+        <p>Loading application details...</p>
+    </div>
 
 </div>
 
 <script src="/js/script.js"></script>
+
 </body>
 </html>

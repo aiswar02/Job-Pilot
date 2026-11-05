@@ -20,22 +20,23 @@ const uploadResume = async (req, res) => {
     }
 
     const uploadResult = await new Promise((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
+    const stream = cloudinary.uploader.upload_stream(
         {
-          folder: "jobpilot/resumes",
-          resource_type: "raw",
-          public_id: `${user._id}_resume`,
-          overwrite: true
+            folder: "jobpilot/resumes",
+            resource_type: "raw",
+            type: "upload",
+            access_mode: "public",
+            public_id: `${user._id}_resume.pdf`,
+            overwrite: true
         },
         (error, result) => {
-          if (error) return reject(error);
-          resolve(result);
+            if (error) return reject(error);
+            resolve(result);
         }
-      );
+    );
 
-      stream.end(req.file.buffer);
-    });
-
+    stream.end(req.file.buffer);
+});
     user.resume = {
       url: uploadResult.secure_url,
       publicId: uploadResult.public_id
@@ -127,8 +128,63 @@ const deleteResume = async (req, res) => {
   }
 }
 
+// Download Resume
+const downloadResume = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId);
+
+        if (!user || !user.resume || !user.resume.url) {
+            return res.status(404).json({
+                success: false,
+                message: "Resume not found"
+            });
+        }
+
+        console.log("Resume URL:", user.resume.url);
+
+       const response = await fetch(user.resume.url);
+
+console.log("Cloudinary URL:", user.resume.url);
+console.log("Cloudinary status:", response.status);
+console.log("Cloudinary content type:", response.headers.get("content-type"));
+
+if (!response.ok) {
+    const errorText = await response.text();
+
+    console.log("Cloudinary error response:", errorText);
+
+    return res.status(500).json({
+        success: false,
+        message: "Cloudinary download failed",
+        status: response.status
+    });
+}
+
+        const buffer = Buffer.from(await response.arrayBuffer());
+
+        console.log("PDF size:", buffer.length);
+
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+            "Content-Disposition",
+            'attachment; filename="resume.pdf"'
+        );
+
+        return res.send(buffer);
+
+    } catch (error) {
+        console.log("Download error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
   uploadResume,
   getResume,
-  deleteResume
+  deleteResume,
+  downloadResume
 }

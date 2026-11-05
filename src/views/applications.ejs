@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Applications | JobPilot</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -14,28 +15,49 @@
 
     <%- include("partials/navbar") %>
 
-    <h2>Job Applications</h2>
+    <div class="topbar">
+        <h2>Job Applications</h2>
+        <a href="/applications/add" class="btn">+ Add Application</a>
+    </div>
 
-    <a href="/applications/add">
-        <button>+ Add Application</button>
-    </a>
+    <div class="content-card">
 
-    <input type="text" id="searchApplication"
-           placeholder="Search company or job title">
+        <div class="search-container">
+            <input type="text" id="searchApplication"
+                   placeholder="Search company or job title...">
 
-    <table>
-        <thead>
-            <tr>
-                <th>Company</th>
-                <th>Job Title</th>
-                <th>Status</th>
-                <th>Applied Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+            <select id="filterStatus">
+                <option value="">All Statuses</option>
+                <option value="SAVED">Saved</option>
+                <option value="APPLIED">Applied</option>
+                <option value="ASSESSMENT">Assessment</option>
+                <option value="INTERVIEW">Interview</option>
+                <option value="OFFER">Offer</option>
+                <option value="REJECTED">Rejected</option>
+            </select>
+        </div>
 
-        <tbody id="applicationsTable"></tbody>
-    </table>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Job Title</th>
+                        <th>Status</th>
+                        <th>Applied Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="applicationsTable">
+                    <tr>
+                        <td colspan="5">Loading applications...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 
 </div>
 

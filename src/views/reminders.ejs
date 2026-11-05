@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reminders | JobPilot</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -14,27 +15,46 @@
 
     <%- include("partials/navbar") %>
 
-    <h2>Reminders</h2>
+    <div class="topbar">
+        <h2>My Reminders</h2>
+        <a href="/reminders/add" class="btn">+ Add Reminder</a>
+    </div>
 
-    <a href="/reminders/add">
-        <button>+ Add Reminder</button>
-    </a>
+    <div class="content-card">
 
-    <table>
+        <div class="search-container">
+            <input type="text" id="searchReminder"
+                   placeholder="Search reminders...">
 
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Type</th>
-                <th>Due Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+            <select id="filterReminderStatus">
+                <option value="">All Statuses</option>
+                <option value="PENDING">Pending</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="CANCELLED">Cancelled</option>
+            </select>
+        </div>
 
-        <tbody id="remindersTable"></tbody>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
-    </table>
+                <tbody id="remindersTable">
+                    <tr>
+                        <td colspan="5">Loading reminders...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 
 </div>
 

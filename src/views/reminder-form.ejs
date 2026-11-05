@@ -2,51 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add Reminder | JobPilot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reminder Form | JobPilot</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
 
-<%- include("partials/sidebar") %>
+<div class="sidebar">
+    <h2 class="logo">Job<span>Pilot</span></h2>
+
+    <a href="/dashboard">Dashboard</a>
+    <a href="/applications">Applications</a>
+    <a href="/reminders" class="active">Reminders</a>
+    <a href="/job-analysis">Job Fit Checker</a>
+    <a href="/resume">Resume</a>
+    <a href="/profile">Profile</a>
+    <a href="/settings">Settings</a>
+</div>
 
 <div class="main-content">
 
-    <%- include("partials/navbar") %>
+    <div class="topbar">
+        <h2 id="reminderFormTitle">Add Reminder</h2>
+        <a href="/reminders" class="btn">← Back to Reminders</a>
+    </div>
 
-    <h2>Add Reminder</h2>
+    <div class="content-card">
 
-    <form id="reminderForm">
+        <form id="reminderForm">
 
-        <label>Title</label>
-        <input type="text" id="title" required>
+            <label>Reminder Title</label>
+            <input type="text" id="title" required
+                   placeholder="Example: Follow up with HR">
 
-        <label>Description</label>
-        <textarea id="description"></textarea>
+            <label>Reminder Type</label>
+            <select id="reminderType">
+                <option value="INTERVIEW">Interview</option>
+                <option value="FOLLOW_UP">Follow Up</option>
+                <option value="OTHER">Other</option>
+            </select>
 
-        <label>Reminder Type</label>
-        <select id="reminderType">
-            <option value="INTERVIEW">Interview</option>
-            <option value="FOLLOW_UP">Follow Up</option>
-            <option value="OTHER">Other</option>
-        </select>
+            <label>Due Date and Time</label>
+            <input type="datetime-local" id="dueDate" required>
 
-        <label>Due Date</label>
-        <input type="datetime-local" id="dueDate" required>
+            <label>Status</label>
+            <select id="status">
+                <option value="PENDING">Pending</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="CANCELLED">Cancelled</option>
+            </select>
 
-        <label>Status</label>
-        <select id="status">
-            <option value="PENDING">Pending</option>
-            <option value="COMPLETED">Completed</option>
-            <option value="CANCELLED">Cancelled</option>
-        </select>
+            <label>Notes</label>
+            <textarea id="notes" rows="4"
+                      placeholder="Additional details..."></textarea>
 
-        <button type="submit">Save Reminder</button>
+            <button type="submit" class="btn" id="saveReminderBtn">
+                Save Reminder
+            </button>
 
-    </form>
+        </form>
 
-    <p id="message"></p>
-
+    </div>
 </div>
 
 <script src="/js/script.js"></script>

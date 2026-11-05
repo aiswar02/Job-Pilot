@@ -34,14 +34,13 @@ app.use("/api/job-analysis", jobAnalysisRoutes);
 
 
 app.get("/", (req, res) => res.redirect("/login"));
-
 app.get("/login", (req, res) => res.render("auth/login"));
 app.get("/register", (req, res) => res.render("auth/register"))
-app.get("/dashboard", (req, res) => res.render("dashboard"));
-app.get("/applications", (req, res) => res.render("applications"));
+app.get("/dashboard", (req, res) => res.render("dashboard" ,{ currentPage: "dashboard" }));
+app.get("/applications", (req, res) => res.render("applications", { currentPage: "applications" }));
 app.get("/applications/add", (req, res) => res.render("application-form"));
 app.get("/applications/details", (req, res) => res.render("application-details"));
-app.get("/reminders", (req, res) => res.render("reminders"));
+app.get("/reminders", (req, res) => res.render("reminders", { currentPage: "reminders" }));
 app.get("/reminders/add", (req, res) => res.render("reminder-form"));
 app.get("/job-analysis", (req, res) => res.render("job-analysis"));
 app.get("/resume", (req, res) => res.render("resume"));
