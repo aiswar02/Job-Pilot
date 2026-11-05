@@ -1,3 +1,62 @@
+
+ function showModal({
+    title = "Confirmation",
+    message = "Are you sure?",
+    confirmText = "OK",
+    cancelText = "Cancel",
+    type = "confirm"
+}) {
+    return new Promise((resolve) => {
+
+        const modal = document.getElementById("customModal");
+        const titleElement = document.getElementById("modalTitle");
+        const messageElement = document.getElementById("modalMessage");
+        const confirmButton = document.getElementById("modalConfirm");
+        const cancelButton = document.getElementById("modalCancel");
+
+        if (!modal) {
+            resolve(false);
+            return;
+        }
+
+        // Set the modal title and message
+        titleElement.textContent = title;
+        messageElement.textContent = message;
+
+        // Set the button text
+        confirmButton.textContent = confirmText;
+        cancelButton.textContent = cancelText;
+
+        // Hide Cancel button for success and error messages
+        if (cancelText === "") {
+            cancelButton.style.display = "none";
+        } else {
+            cancelButton.style.display = "inline-block";
+        }
+
+        // Change button color for delete confirmation
+        if (type === "danger") {
+            confirmButton.className = "modal-danger";
+        } else {
+            confirmButton.className = "modal-confirm";
+        }
+
+        // Show the modal
+        modal.classList.add("active");
+
+        // When Confirm is clicked
+        confirmButton.onclick = function () {
+            modal.classList.remove("active");
+            resolve(true);
+        };
+
+        // When Cancel is clicked
+        cancelButton.onclick = function () {
+            modal.classList.remove("active");
+            resolve(false);
+        };
+    });
+}
 const API_BASE_URL ="https://job-pilot-1-czpi.onrender.com/api";
 
 async function apiRequest(endpoint, method = "GET", data = null) {
@@ -60,12 +119,22 @@ if (registerForm) {
 
             await apiRequest("/auth/register", "POST", data);
 
-            alert("Registration successful! Please login.");
+            await showModal({
+                title: "Registration Successful",
+                message: "Your account has been created successfully. Please login.",
+                confirmText: "OK",
+                cancelText: ""
+            });
 
             window.location.href = "/login";
 
         } catch (error) {
-            alert(error.message);
+            await showModal({
+                title: "Registration Failed",
+                message: error.message,
+                confirmText: "OK",
+                cancelText: ""
+            });
         }
     });
 }
@@ -112,7 +181,12 @@ if (loginForm) {
             window.location.href = "/dashboard";
 
         } catch (error) {
-            alert(error.message);
+            await showModal({
+                title: "Login Failed",
+                message: error.message,
+                confirmText: "OK",
+                cancelText: ""
+            });
         }
     });
 }
@@ -262,7 +336,6 @@ if (statusFilter) {
 
 
 
-// CREATE APPLICATION
 
 /* =====================================
    CREATE AND EDIT APPLICATION
@@ -403,26 +476,52 @@ if (applicationForm) {
 
         try {
 
-            if (editId) {
+           if (editId) {
+    const confirmed = await showModal({
+        title: "Update Application",
+        message: "Are you sure you want to update this application?",
+        confirmText: "Update",
+        type: "confirm"
+    });
 
-                await apiRequest(
-                    `/applications/${editId}`,
-                    "PUT",
-                    applicationData
-                );
+    if (!confirmed) return;
 
-                alert("Application updated successfully!");
+    await apiRequest(
+        `/applications/${editId}`,
+        "PUT",
+        applicationData
+    );
 
-            } else {
+    await showModal({
+        title: "Success",
+        message: "Application updated successfully!",
+        confirmText: "OK",
+        cancelText: ""
+    });
 
-                await apiRequest(
-                    `/applications`,
-                    "POST",
-                    applicationData
-                );
+} else {
+    const confirmed = await showModal({
+        title: "Add Application",
+        message: "Do you want to add this job application?",
+        confirmText: "Add",
+        type: "confirm"
+    });
 
-                alert("Application added successfully!");
-            }
+    if (!confirmed) return;
+
+    await apiRequest(
+        "/applications",
+        "POST",
+        applicationData
+    );
+
+    await showModal({
+        title: "Success",
+        message: "Application added successfully!",
+        confirmText: "OK",
+        cancelText: ""
+    });
+}
 
             localStorage.removeItem("selectedApplication");
 
@@ -430,7 +529,12 @@ if (applicationForm) {
 
         } catch (error) {
 
-            alert("Failed to save application: " + error.message);
+           await showModal({
+    title: "Error",
+    message: "Failed to save application: " + error.message,
+    confirmText: "OK",
+    cancelText: ""
+});
 
             console.error("Submit application error:", error);
         }
@@ -464,7 +568,12 @@ async function viewApplication(id) {
 
     } catch (error) {
 
-        alert("Failed to view application: " + error.message);
+        await showModal({
+            title: "Error",
+            message: "Failed to view application: " + error.message,
+            confirmText: "OK",
+            cancelText: ""
+        });
 
         console.error("View application error:", error);
     }
@@ -521,26 +630,39 @@ if (applicationDetails) {
 
 async function deleteApplication(id) {
 
-    if (!confirm("Are you sure you want to delete this application?")) {
-        return;
-    }
+    const confirmed = await showModal({
+        title: "Delete Application",
+        message: "Are you sure you want to delete this application?",
+        confirmText: "Delete",
+        type: "danger"
+    });
+
+    if (!confirmed) return;
 
     try {
 
         await apiRequest(`/applications/${id}`, "DELETE");
 
-        alert("Application deleted successfully!");
-
         await loadApplications();
+
+        await showModal({
+            title: "Success",
+            message: "Application deleted successfully!",
+            confirmText: "OK",
+            cancelText: "",
+            type: "confirm"
+        });
 
     } catch (error) {
 
-        alert("Failed to delete application: " + error.message);
-
-        console.error("Delete application error:", error);
+        await showModal({
+            title: "Error",
+            message: error.message,
+            confirmText: "OK",
+            cancelText: ""
+        });
     }
 }
-
 
 // ======================
 // REMINDERS
@@ -744,7 +866,12 @@ if (reminderForm) {
                 }
 
             } catch (error) {
-                alert("Failed to load reminder: " + error.message);
+                await showModal({
+                    title: "Error",
+                    message: "Failed to load reminder: " + error.message,
+                    confirmText: "OK",
+                    cancelText: ""
+                });
                 console.error("Load reminder error:", error);
             }
         }
@@ -778,30 +905,60 @@ if (reminderForm) {
 
             if (editId) {
 
-                await apiRequest(
-                    `/reminders/${editId}`,
-                    "PUT",
-                    reminderData
-                );
+    const confirmed = await showModal({
+        title: "Update Reminder",
+        message: "Are you sure you want to update this reminder?",
+        confirmText: "Update"
+    });
 
-                alert("Reminder updated successfully!");
+    if (!confirmed) return;
 
-            } else {
+    await apiRequest(
+        `/reminders/${editId}`,
+        "PUT",
+        reminderData
+    );
 
-                await apiRequest(
-                    "/reminders",
-                    "POST",
-                    reminderData
-                );
+    await showModal({
+        title: "Success",
+        message: "Reminder updated successfully!",
+        confirmText: "OK",
+        cancelText: ""
+    });
 
-                alert("Reminder added successfully!");
-            }
+} else {
 
+    const confirmed = await showModal({
+        title: "Add Reminder",
+        message: "Do you want to add this reminder?",
+        confirmText: "Add"
+    });
+
+    if (!confirmed) return;
+
+    await apiRequest(
+        "/reminders",
+        "POST",
+        reminderData
+    );
+
+    await showModal({
+        title: "Success",
+        message: "Reminder added successfully!",
+        confirmText: "OK",
+        cancelText: ""
+    });
+}
             window.location.href = "/reminders";
 
         } catch (error) {
 
-            alert("Failed to save reminder: " + error.message);
+            await showModal({
+                title: "Error",
+                message: "Failed to save reminder: " + error.message,
+                confirmText: "OK",
+                cancelText: ""
+            });
 
             console.error("Save reminder error:", error);
         }
@@ -832,13 +989,23 @@ async function completeReminder(id) {
             status: "COMPLETED"
         });
 
-        alert("Reminder marked as completed!");
+        await showModal({
+            title: "Success",
+            message: "Reminder marked as completed!",
+            confirmText: "OK",
+            cancelText: ""
+        });
 
         await loadReminders();
 
     } catch (error) {
 
-        alert("Failed to complete reminder: " + error.message);
+       await showModal({
+            title: "Error",
+            message: "Failed to complete reminder: " + error.message,
+            confirmText: "OK",
+            cancelText: ""
+        });
 
         console.error("Complete reminder error:", error);
     }
@@ -851,21 +1018,35 @@ async function completeReminder(id) {
 
 async function deleteReminder(id) {
 
-    if (!confirm("Are you sure you want to delete this reminder?")) {
-        return;
-    }
+    const confirmed = await showModal({
+        title: "Delete Reminder",
+        message: "Are you sure you want to delete this reminder?",
+        confirmText: "Delete"
+    });
+
+    if (!confirmed) return;
 
     try {
 
         await apiRequest(`/reminders/${id}`, "DELETE");
 
-        alert("Reminder deleted successfully!");
+        await showModal({
+            title: "Success",
+            message: "Reminder deleted successfully!",
+            confirmText: "OK",
+            cancelText: ""
+        });
 
         await loadReminders();
 
     } catch (error) {
 
-        alert("Failed to delete reminder: " + error.message);
+        await showModal({
+            title: "Error",
+            message: "Failed to delete reminder: " + error.message,
+            confirmText: "OK",
+            cancelText: ""
+        });
 
         console.error("Delete reminder error:", error);
     }
@@ -910,7 +1091,12 @@ if (jobAnalysisForm) {
             `;
 
         } catch (error) {
-            alert(error.message);
+            await showModal({
+                title: "Error",
+                message: "Failed to analyze job: " + error.message,
+                confirmText: "OK",
+                cancelText: ""
+            });
         }
     });
 }
@@ -1040,7 +1226,12 @@ async function downloadResumeFile() {
             const errorData = await response.json();
             console.log("Download API error:", errorData);
 
-            alert(errorData.message || "Unable to download resume");
+            await showModal({
+                title: "Download Error",
+                message: errorData.message,
+                confirmText: "OK",
+                cancelText: ""
+            });
             return;
         }
 
@@ -1060,7 +1251,12 @@ async function downloadResumeFile() {
 
     } catch (error) {
         console.error("Download error:", error);
-        alert("Unable to download resume");
+        await showModal({
+            title: "Error",
+            message: "Unable to download resume",
+            confirmText: "OK",
+            cancelText: ""
+        });
     }
 }
 
@@ -1116,6 +1312,12 @@ async function loadProfile() {
 
     } catch (error) {
         console.error("Profile error:", error.message);
+        await showModal({
+            title: "Error",
+            message: "Failed to load profile: " + error.message,
+            confirmText: "OK",
+            cancelText: ""
+        });
     }
 }
 
@@ -1166,10 +1368,20 @@ if (profileForm) {
 
             await apiRequest("/profile", "PUT", data);
 
-            alert("Profile updated successfully!");
+            await showModal({
+                title: "Success",
+                message: "Profile updated successfully!",
+                confirmText: "OK",
+                cancelText: ""
+            });
 
         } catch (error) {
-            alert(error.message);
+            await showModal({
+                title: "Error",
+                message: "Failed to update profile: " + error.message,
+                confirmText: "OK",
+                cancelText: ""
+            });
         }
     });
 }
@@ -1184,7 +1396,12 @@ async function logout() {
             refreshToken: localStorage.getItem("refreshToken")
         });
     } catch (error) {
-        console.log("Logout API error:", error.message);
+        await showModal({
+            title: "Error",
+            message: "Failed to logout: " + error.message,
+            confirmText: "OK",
+            cancelText: ""
+        });
     }
 
     localStorage.removeItem("accessToken");
