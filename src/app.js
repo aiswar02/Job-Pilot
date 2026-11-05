@@ -3,17 +3,21 @@ const path = require("path");
 
 const app = express();
 
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+// Prevent browser from caching pages
+app.use((req, res, next) => {
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+    res.set("Pragma", "no-cache");
+    res.set("Expires", "0");
+    next();
+});
 
 app.use(express.static(path.join(__dirname, "public")));
-
 
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
@@ -23,7 +27,7 @@ const reminderRoutes = require("./routes/reminderRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const jobAnalysisRoutes = require("./routes/jobAnalysisRoutes");
 
-
+// API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/resume", resumeRoutes);
@@ -32,23 +36,55 @@ app.use("/api/reminders", reminderRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/job-analysis", jobAnalysisRoutes);
 
-
+// Public pages
 app.get("/", (req, res) => res.redirect("/login"));
-app.get("/login", (req, res) => res.render("auth/login"));
-app.get("/register", (req, res) => res.render("auth/register"))
-app.get("/dashboard", (req, res) => res.render("dashboard" ,{ currentPage: "dashboard" }));
-app.get("/applications", (req, res) => res.render("applications", { currentPage: "applications" }));
-app.get("/applications/add", (req, res) => res.render("application-form"));
-app.get("/applications/details", (req, res) => res.render("application-details"));
-app.get("/reminders", (req, res) => res.render("reminders", { currentPage: "reminders" }));
-app.get("/reminders/add", (req, res) => res.render("reminder-form"));
-app.get("/job-analysis", (req, res) => res.render("job-analysis"));
-app.get("/resume", (req, res) => res.render("resume"));
-app.get("/profile", (req, res) => res.render("profile"));
-app.get("/settings", (req, res) => res.render("settings"));
 
+app.get("/login", (req, res) => res.render("auth/login"));
+
+app.get("/register", (req, res) => res.render("auth/register"));
+
+// Protected frontend pages
+app.get("/dashboard", (req, res) =>
+    res.render("dashboard", { currentPage: "dashboard" })
+);
+
+app.get("/applications", (req, res) =>
+    res.render("applications", { currentPage: "applications" })
+);
+
+app.get("/applications/add", (req, res) =>
+    res.render("application-form")
+);
+
+app.get("/applications/details", (req, res) =>
+    res.render("application-details")
+);
+
+app.get("/reminders", (req, res) =>
+    res.render("reminders", { currentPage: "reminders" })
+);
+
+app.get("/reminders/add", (req, res) =>
+    res.render("reminder-form")
+);
+
+app.get("/job-analysis", (req, res) =>
+    res.render("job-analysis")
+);
+
+app.get("/resume", (req, res) =>
+    res.render("resume")
+);
+
+app.get("/profile", (req, res) =>
+    res.render("profile")
+);
+
+app.get("/settings", (req, res) =>
+    res.render("settings")
+);
 
 const errorMiddleware = require("./middleware/errorMiddleware");
 app.use(errorMiddleware);
 
-module.exports = app
+module.exports = app;
