@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const authMiddleware = require("../middleware/authMiddleware");
-const upload = require("../middleware/uploadmiddleware");
+const upload = require("../middleware/uploadMiddleware");
 
 const {
     uploadResume,
